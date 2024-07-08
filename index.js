@@ -13,19 +13,17 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
-const jwtSecret =
-  "yteerefesiahafsuddthwowwy3832p2y4t4jrhffweq1p]32426aqxt#5rr04u44=pfjfbf;gn";
+const jwtSecret =`3Tuywsr%900))(-)gadsr`;
 
 app.post("/auth", (req, res) => {
   let { email, password } = req.body;
 
   User.findOne({
-    where: { email: email, password: password },
+    where: { email: email },
   })
     .then((user) => {
-      if (user != undefined) {
-        let correct = bcrypt.compareSync(password, user.password);
-        if (correct) {
+      if (user && bcrypt.compareSync(password, user.password)) {
+
           jwt.sign(
             { user },
             jwtSecret,
@@ -38,9 +36,7 @@ app.post("/auth", (req, res) => {
               }
             },
           );
-        } else {
-          res.status(404);
-        }
+       
       } else {
         res.status(404);
       }
@@ -78,13 +74,13 @@ app.get("/product/:id", (req, res) => {
 
 app.post("/product", checkToken, (req, res) => {
   let { name, description, price, category } = req.body;
-  let prices = parseFloat(price);
+  let parsedPrice = parseFloat(price);
 
   if (name && description && !isNaN(prices) && category) {
     Product.create({
       name: name,
       description: description,
-      price: prices,
+      price: parsedPrice,
       category: category,
     }).then(() => {
       res.sendStatus(200);
@@ -139,9 +135,11 @@ app.post("/user", (req, res) => {
   User.findOne({
     where: { email: email },
   }).then((user) => {
-    if (user == undefined) {
-      let salt = bcrypt.genSaltSync(10);
-      let hash = bcrypt.hashSync(password, salt);
+    if (user) { 
+        res.status(400);
+    } else {
+     let salt = bcrypt.genSaltSync(10);
+     let hash = bcrypt.hashSync(password, salt);
 
       User.create({
         name: name,
@@ -154,9 +152,9 @@ app.post("/user", (req, res) => {
         .catch((err) => {
           res.status(500).json({ error: err });
         });
-    } else {
-      res.status(400);
     }
+  }).catch(() => {
+    res.status(404)
   });
 });
 
@@ -165,3 +163,5 @@ app.listen(3000, (error) => {
     console.log(error);
   }
 });
+
+module.exports = app;

@@ -10,8 +10,14 @@ async function removeItem(item) {
   }
 }
 
+const axiosConfig = {
+  headers: {
+    Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJuYW1lIjoiQXJpZWwgTHVjYXMiLCJlbWFpbCI6ImFyaWVsQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEwJEtSQ0d5bkx2b2g3M0NSd2lNSWt1Lk9wQThERUVDeUFlNDRSZHhRL0cvWFo4Q2x5SkNVTG9PIiwiY3JlYXRlZEF0IjoiMjAyNC0wNy0wOFQxMTo1MToyNi4wMDBaIiwidXBkYXRlZEF0IjoiMjAyNC0wNy0wOFQxMTo1MToyNi4wMDBaIn0sImlhdCI6MTcyMDQ0MTQ4NiwiZXhwIjoxNzIwNjE0Mjg2fQ.tPZMJiQl4jI0rCrqR5O5kft2UyDU8TJ54D2Hs_D__is"
+  }
+}
+
 axios
-  .get("http://localhost:3000/product")
+  .get("http://localhost:3000/product", axiosConfig)
   .then((product) => {
     const response = product.data;
     const products = response.products;
@@ -58,9 +64,9 @@ function createProduct() {
   };
 
   axios
-    .post("http://localhost:3000/product", newProduct)
+    .post("http://localhost:3000/product", newProduct, axiosConfig)
     .then((response) => {
-      console.log("Cadastrado com sucesso!");
+      console.log(response.data)
     })
     .catch((error) => {
       console.log(error.message);
