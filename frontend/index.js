@@ -1,18 +1,45 @@
+let axiosConfig = {
+  headers: {
+    Authorization: "Bearer "+ localStorage.getItem('token')
+  }
+}
+
+async function singInAccount() {
+  const loginEmail = document.querySelector('#email').value;
+  const logInPassword = document.querySelector('#password').value;
+
+  const login = {
+    email: loginEmail,
+    password: logInPassword
+  }
+  
+    axios.post("http://localhost:3000/auth", login).then(response => {
+      if(response) {
+        let token = response.data.token;
+        localStorage.setItem('token', token);
+        axiosConfig.headers.Authorization = `Bearer ${token}`
+      } else {
+        console.log('Resposta nao encontrado')
+      }
+    });
+      
+}
+
+const loginbtn = document.querySelector('#login-btn');
+loginbtn.addEventListener('click', (e) => {
+  singInAccount();
+  e.preventDefault()
+})
+
 const list = document.querySelector(".product");
 
 async function removeItem(item) {
   let id = item.getAttribute("data-id");
   try {
-    await axios.delete("http://localhost:3000/product/" + id);
+    await axios.delete("http://localhost:3000/product/" + id, axiosConfig);
     alert("Deletado com sucesso!");
   } catch (error) {
     console.log(error.message);
-  }
-}
-
-const axiosConfig = {
-  headers: {
-    Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJuYW1lIjoiQXJpZWwgTHVjYXMiLCJlbWFpbCI6ImFyaWVsQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEwJEtSQ0d5bkx2b2g3M0NSd2lNSWt1Lk9wQThERUVDeUFlNDRSZHhRL0cvWFo4Q2x5SkNVTG9PIiwiY3JlYXRlZEF0IjoiMjAyNC0wNy0wOFQxMTo1MToyNi4wMDBaIiwidXBkYXRlZEF0IjoiMjAyNC0wNy0wOFQxMTo1MToyNi4wMDBaIn0sImlhdCI6MTcyMDQ0MTQ4NiwiZXhwIjoxNzIwNjE0Mjg2fQ.tPZMJiQl4jI0rCrqR5O5kft2UyDU8TJ54D2Hs_D__is"
   }
 }
 

@@ -22,17 +22,18 @@ app.post("/auth", (req, res) => {
     where: { email: email },
   })
     .then((user) => {
-      if (user && bcrypt.compareSync(password, user.password)) {
-
+      if (user != undefined && bcrypt.compareSync(password, user.password)) {
           jwt.sign(
-            { user },
+            { id: user.id, email: user.email, name: user.name },
             jwtSecret,
             { expiresIn: "48h" },
             (error, token) => {
               if (error) {
                 res.status(500);
+                console.log('Lamento porque nao foi possivel criar o token')
               } else {
                 res.status(200).json({ token: token });
+                console.log(`Token criado no sign e este: ${token}`)
               }
             },
           );
@@ -109,7 +110,7 @@ app.put("/product", checkToken, (req, res) => {
       res.sendStatus(200).json({ products: products });
     })
     .catch((error) => {
-      res.sendStatus(404);
+      res.sendStatus(404).send({error: error});
     });
 });
 

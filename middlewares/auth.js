@@ -3,18 +3,22 @@ const jwtSecret =`3Tuywsr%900))(-)gadsr`;
 
 async function checkToken(req, res, next) {
     try{
-  const tokenAuth = await req.headers["authorization"];
+  let tokenAuth = await req.headers["authorization"];
   console.log("Token recebido:", tokenAuth);
 
   if (tokenAuth && tokenAuth !== "undefined") {
     const bearer = tokenAuth.split(" ");
     const token = bearer[1];
-    jwt.verify(token, jwtSecret, (error, decoded) => {
+    jwt.verify(token, jwtSecret, (error, decoded )=> {
       if (!error) {
         req.token = token;
-        req.loggedUser = {id: decoded.user.id, name: decoded.user.name, email: decoded.user.email};
-        console.log("Usuário autenticado:", req.loggedUser);
         console.log(decoded)
+        req.loggedUser = { 
+          id: decoded.id, 
+          email: decoded.email, 
+          name: decoded.name };
+        console.log("Usuário autenticado:", req.loggedUser);
+        
         next();
       } else {
         console.log("Erro ao verificar token:", error);

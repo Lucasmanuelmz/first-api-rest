@@ -6,6 +6,18 @@
     <title>Loja online</title>
   </head>
   <body>
+    <form action="/auth" method="post" class="sign">
+      <h2>Entrar na conta</h2>
+      <label for="email">Email:</label><br>
+      <input autocomplete="email" name='email' type="text" id="email" placeholder="Digita um email valido">
+      <br>
+      <br>
+      <label for="password">password</label><br>
+      <input autocomplete="current-password" name="password" type="password" id="password" placeholder="Digita uma senha valida"><br>
+      <br>
+      <button id="login-btn" type="submit">Entrar</button>
+    </form>
+    <hr>
     <ul class="product"></ul>
     <form action="" method="">
       <input type="text" id="name" placeholder="Nome do produto" /><br />
