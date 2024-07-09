@@ -99,6 +99,7 @@ Create a new product.
     "price": 10.99,
     "category": "Product Category"
   }
+  ```
 ### Response:
 
 - `200 OK` on successful creation.
@@ -151,4 +152,4 @@ Delete a product by ID.
 - `404 Not Found` indicates requested resource was not found.
 - `500 Internal Server Error` indicates a server-side error occurred.
 
-**Esta api e apenas um projeto com nodes e express e esta documentacao faz parte do projeto
+**Esta api e apenas um projeto com nodes e express e esta documentacao faz parte do projeto**
